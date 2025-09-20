@@ -6,6 +6,7 @@
 #include <string>
 
 using namespace std;
+
 long long baseToDecimal(const string& num, int base) {
     long long result = 0;
     for (char c : num) {
@@ -22,7 +23,6 @@ vector<double> gaussianElimination(vector<vector<double>> A, vector<double> b) {
     int n = b.size();
 
     for (int i = 0; i < n; i++) {
-        
         int maxRow = i;
         for (int k = i + 1; k < n; k++)
             if (abs(A[k][i]) > abs(A[maxRow][i]))
@@ -31,7 +31,6 @@ vector<double> gaussianElimination(vector<vector<double>> A, vector<double> b) {
         swap(A[i], A[maxRow]);
         swap(b[i], b[maxRow]);
 
-        
         for (int k = i + 1; k < n; k++) {
             double factor = A[k][i] / A[i][i];
             for (int j = i; j < n; j++)
@@ -50,43 +49,56 @@ vector<double> gaussianElimination(vector<vector<double>> A, vector<double> b) {
     return x;
 }
 
-int main() {
-    int n = 10;        
-    int k = 7;         
-
-    vector<int> xs = {1,2,3,4,5,6,7,8,9,10};
-
-    vector<pair<int, string>> roots = {
-        {6,  "13444211440455345511"},
-        {15, "aed7015a346d635"},
-        {15, "6aeeb69631c227c"},
-        {16, "e1b5e05623d881f"},
-        {8,  "316034514573652620673"},
-        {3,  "2122212201122002221120200210011020220200"},
-        {3,  "20120221122211000100210021102001201112121"},
-        {6,  "20220554335330240002224253"},
-        {12, "45153788322a1255483"},
-        {7,  "1101613130313526312514143"}
-    };
-
+void solveTestCase(int n, int k, vector<int> xs, vector<pair<int, string>> roots) {
     vector<long long> ys;
-    for (auto& root : roots)
+    for (auto& root : roots) {
         ys.push_back(baseToDecimal(root.second, root.first));
+    }
 
- 
     vector<vector<double>> A(k, vector<double>(k, 1.0));
     vector<double> b(k);
-
     for (int i = 0; i < k; i++) {
         b[i] = ys[i];
         for (int j = 1; j < k; j++) {
             A[i][j] = pow(xs[i], j);
         }
     }
-
     vector<double> coef = gaussianElimination(A, b);
 
-    cout << fixed << setprecision(0) << coef[0] << "\n";
+    cout << fixed << setprecision(0) << coef[0] << endl;
+}
+
+int main() {
+    // Test Case 1
+    int n1 = 4, k1 = 3;
+    vector<int> xs1 = {1, 2, 3, 6};
+    vector<pair<int, string>> roots1 = {
+        {10, "4"},
+        {2, "111"},
+        {10, "12"},
+        {4, "213"}
+    };
+    cout << "Test Case 1 Output: ";
+    solveTestCase(n1, k1, xs1, roots1);
+
+    // Test Case 2
+    int n2 = 10, k2 = 7;
+    vector<int> xs2 = {1,2,3,4,5,6,7,8,9,10};
+    vector<pair<int, string>> roots2 = {
+        {6, "13444211440455345511"},
+        {15, "aed7015a346d635"},
+        {15, "6aeeb69631c227c"},
+        {16, "e1b5e05623d881f"},
+        {8, "316034514573652620673"},
+        {3, "2122212201122002221120200210011020220200"},
+        {3, "20120221122211000100210021102001201112121"},
+        {6, "20220554335330240002224253"},
+        {12, "45153788322a1255483"},
+        {7, "1101613130313526312514143"}
+    };
+    cout << "Test Case 2 Output: ";
+    solveTestCase(n2, k2, xs2, roots2);
 
     return 0;
 }
+
